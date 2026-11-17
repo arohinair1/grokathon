@@ -1,0 +1,30 @@
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+
+# Secrets / local config
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Claude Code local settings
+.claude/settings.local.json
+
+# Dependencies / build output (stack not chosen yet; common defaults)
+node_modules/
+dist/
+build/
+coverage/
+.venv/
+venv/
+__pycache__/
+*.pyc
+
+# Large or copyrighted source captures (PDFs, screenshots, page dumps).
+# Keep these locally; cite the URL + access date in tracked notes instead.
+research/raw/**/_local/
