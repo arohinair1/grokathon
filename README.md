@@ -58,7 +58,7 @@ The goal is to make finding storage or parking feel less like searching through 
 
 ## Demo Video
 
-**[Watch the 60-Second College Space Demo]((https://www.youtube.com/watch?v=dD568mS6HZs))**
+**[Watch the 60-Second College Space Demo](https://www.youtube.com/watch?v=dD568mS6HZs)**
 
 This walkthrough demonstrates the storage marketplace, parking discovery, Grok SpaceMatch, and the host listing experience.
 
