@@ -1,145 +1,120 @@
 # College Space — Yale
 
-College Space — Yale is a demo marketplace for student storage and off-street parking around Yale in New Haven. A student can browse a fictional sample catalog, or describe what they need in plain language. Grok SpaceMatch reads that request on the server, and College Space filters the sample catalog and explains the listings that fit.
+### A little more space for life at Yale.
 
-Two use cases are in the demo:
+**[Try the Live App](https://grokathon-blond.vercel.app/)**
 
-- **Storage.** Summer and break storage for boxes, luggage, a mini-fridge, or a bicycle.
-- **Parking.** A driveway or covered spot for the semester, and a weekend driveway for a visit, move-in, or graduation. Listings state vehicle limits and whether overnight parking is included.
+## Inspiration
 
-Sample listings, hosts, and prices are illustrative. Nothing here collects payment or reserves a real space. College Space is not a Yale University service.
+Every year during move-in, my parents drive me to Yale, and finding parking near campus is always a struggle. I've also had friends struggle to find affordable summer storage, especially when they only have a few boxes or small belongings that aren't worth paying for an entire storage unit.
 
-## Built with Grok
+Meanwhile, students living off campus often have extra closets, cupboards, or unused rooms. Some aren't subletting their houses over the summer, and even those who are may still have spare storage space. Similarly, driveways around campus often sit empty while visiting families struggle to find parking.
 
-Hackathon work in Cursor used Grok. SpaceMatch is written to call the xAI API from the server (`grok-4.7` unless `XAI_MODEL` is set). Listing facts, availability, and prices come from the checked-in sample catalog. Grok does not create listings.
+That got me thinking: **what if we could make better use of the space that already exists around Yale?**
 
-Without `XAI_API_KEY`, SpaceMatch says live Grok is not configured and uses a labeled local parser. That parser is not described as Grok.
+**College Space** is meant to be a peer-to-peer marketplace connecting students who need storage or parking with students and local residents who have extra space.
 
-The screenshot below is the project owner’s capture of Grok in Cursor. This repository does not include a separate image file. If that attachment is missing, add a real screenshot at `docs/grok-in-cursor.png` and do not substitute a generated image.
+It's mutually beneficial: renters get affordable, convenient options, while hosts can earn money from space they aren't using.
 
-<img width="965" height="752" alt="Grok in Cursor, captured by the project owner on November 17, 2026" src="https://github.com/user-attachments/assets/edabbdde-eae2-4b73-bdc3-4edf49ff020f" />
+## How It Works
 
-## Features
+College Space brings storage and parking into one marketplace.
 
-These work from the sample catalog with no database:
+### Find Storage
 
-- Homepage, navigation, and neighborhood filters
-- Storage search and storage listing pages, including price, neighborhood, capacity, availability, and restrictions
-- Parking search and parking listing pages, including price, vehicle limits, and overnight notes
-- Grok SpaceMatch for storage and parking. Live xAI calls run only when `XAI_API_KEY` is set on the server. Otherwise the page uses the labeled local parser.
-- A simulated booking request stored in the browser
-- A host draft on `/list`, also stored in this browser only
+Browse storage options around Yale, compare prices and locations, and find space for anything from a few boxes to larger belongings.
 
-These exist in the code and need a Supabase project before they do anything persistent:
+Rather than paying for an entire storage unit, students can explore smaller, more flexible options that better match their needs.
 
-- Accounts, login, and password recovery
-- Host publishing, photos, and blocked dates
-- Booking requests saved to a database
+### Find Parking
 
-Not part of this demo: payments, real reservations, and a hosted college directory. `/colleges` redirects to search.
+Find driveway and off-street parking near campus, especially useful during move-in, graduation, Yale–Harvard weekends, and other busy events.
 
-## Provenance
+Users can browse parking listings, compare prices, and view details about available spaces.
 
-This repository is the Yale demo plus earlier College Space marketplace code. Git history still contains those earlier milestones, including accounts, host tools, and booking requests that expect Supabase. The Yale catalog and SpaceMatch sit on top of that code. Do not treat the older marketplace implementation as work that was written from scratch for this hackathon, and do not point it at an existing production database.
+### List Your Space
 
-## Tech stack
+Students and local residents with unused space can use a guided listing flow to describe their storage or parking space, specify pricing and availability, and create a listing draft.
 
-- Next.js 16 App Router and React 19, in `web/`
-- TypeScript, Tailwind CSS 4, and Vitest
-- Optional Supabase for accounts and persisted listings
-- Optional xAI API for live SpaceMatch
+*Note: Listing creation is currently a prototype experience; public publishing and booking are not yet supported.*
 
-## Prerequisites
+## Powered by Grok SpaceMatch
 
-- Node.js 20.9 or newer
-- npm (the lockfile is `web/package-lock.json`)
-- An xAI API key only if you want live Grok answers
-- A Supabase project only if you want accounts or persisted host listings. This demo does not require one.
+One of the main features of College Space is **Grok SpaceMatch**, an AI-powered matching assistant built using xAI's Grok API.
 
-## Installation
+Instead of manually searching through listings and filters, users can describe exactly what they're looking for in natural language.
+
+**Example storage request:**
+
+> I'm going home for the summer and need somewhere near Old Campus to store two suitcases and a few boxes for under $100 a month.
+
+**Example parking request:**
+
+> My parents are visiting Yale for graduation and need a driveway spot near campus for the weekend.
+
+Grok interprets the user's request, identifies relevant preferences such as budget, location, duration, and space requirements, and recommends suitable listings with explanations.
+
+The goal is to make finding storage or parking feel less like searching through a marketplace and more like asking someone who understands what you need.
+
+## Demo Video
+
+**[Watch the 60-Second College Space Demo](YOUR_VIDEO_URL)**
+
+This walkthrough demonstrates the storage marketplace, parking discovery, Grok SpaceMatch, and the host listing experience.
+
+## Grok in Action — Hackathon Screenshot
+
+The following screenshot documents Grok being used in Cursor during the Yale Grokathon.
+
+<img width="1156" height="713" alt="Screenshot 2026-11-17 at 7 12 29 PM" src="https://github.com/user-attachments/assets/f7abcc5b-3f20-4280-8ba7-54a76699d44c" />
+
+
+## Current Prototype
+
+College Space — Yale is an interactive hackathon prototype featuring:
+
+- Storage and parking marketplace discovery
+- Listing details and pricing information
+- AI-assisted recommendations through Grok SpaceMatch
+- Natural-language search for storage and parking
+- A guided host listing-draft experience
+- A responsive interface designed around Yale students
+
+The current listings are illustrative demo data. The application is not yet a live marketplace supporting real reservations, payments, or publicly published host listings.
+
+## Run Locally
+
+Clone the repository:
 
 ```bash
 git clone https://github.com/arohinair1/grokathon.git
 cd grokathon/web
-npm ci
 ```
 
-## Environment
-
-Copy the example file and leave values blank for the sample-catalog demo:
+Install dependencies:
 
 ```bash
-cp .env.example .env.local
+npm install
 ```
 
-| Name | Required | Purpose |
-| --- | --- | --- |
-| `XAI_API_KEY` | No | Server-only xAI key. Blank uses the labeled local parser. Never prefix it with `NEXT_PUBLIC_`. |
-| `XAI_MODEL` | No | Model id. Defaults to `grok-4.7`. |
-| `XAI_API_BASE_URL` | No | API root. Defaults to `https://api.x.ai/v1`. |
-| `NEXT_PUBLIC_SUPABASE_URL` | No | Supabase project origin, for accounts and persisted data. |
-| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | No | Supabase anon key. Row Level Security is what keeps writes closed. Do not add a service-role key. |
-| `NEXT_PUBLIC_SITE_URL` | No | Public site origin. Use `http://localhost:3000` locally. Account pages say they are unavailable when this is missing. |
+Create a `.env.local` file in `web/` and add your xAI API key:
 
-Do not commit `.env.local`. Do not run the SQL files in `web/supabase/` against an existing database unless you intend to change that database.
+```env
+XAI_API_KEY=your_xai_api_key_here
+```
 
-## Running locally
-
-From `web/`:
+Start the development server:
 
 ```bash
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000).
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-## Tests, lint, and production build
+**Note:** These instructions assume the Next.js application is in `web/`. Verify the current repository structure and any additional required environment variables before running.
 
-From `web/`:
+## What's Next?
 
-```bash
-npm test
-npm run lint
-npx tsc --noEmit
-npm run build
-```
+The longer-term vision is to make College Space a trusted student-to-student marketplace with verified hosts, persistent listings, real booking functionality, and support for additional college campuses.
 
-`npm run build` skips the hosted catalog check when the Supabase variables are unset. The checked-in Next.js version prints a security advisory and may exit once before a retry continues the build.
-
-## Using the demo
-
-**Storage.** Open [http://localhost:3000/search?category=storage](http://localhost:3000/search?category=storage). Filter by neighborhood or dates, then open a card. A storage page shows the illustrative price, neighborhood, capacity, availability, and restrictions.
-
-**Parking.** Open [http://localhost:3000/search?category=monthly-parking](http://localhost:3000/search?category=monthly-parking). The catalog includes monthly spots for a standard car and a weekend driveway near Old Campus that allows an SUV and includes overnight parking. Open a card to read the vehicle limit and access notes.
-
-**SpaceMatch.** Open [http://localhost:3000/find](http://localhost:3000/find). Try:
-
-- `I'm going home for the summer and need to store a mini-fridge, two suitcases, and four boxes near Old Campus for under $100 a month.`
-- `My parents are visiting Yale and need a driveway spot near Old Campus for a weekend. They have an SUV and want to spend under $100 total.`
-
-The page shows the category it read, the constraints it kept, and the sample listings that satisfied them, with an explanation tied to those listings. A standard-car listing is not offered for the SUV request.
-
-**Listing request.** On a listing, choose dates inside the sample window and submit the sample request. It is stored in this browser and appears at `/bookings`. It is not sent to a host and it does not reserve the space.
-
-**Host draft.** Open `/list`, describe a space, and approve the draft. It stays in this browser. `/host` is the account hosting screen and stays unavailable until Supabase is configured.
-
-## Deployment
-
-Deploy this repository as its own Vercel project. Do not reuse the original College Space project or a separate `grok` project.
-
-- Framework: Next.js
-- Root directory: `web`
-- Production branch: the branch you intend to demo
-- Install, build, and output: leave the framework defaults (`npm ci` or `npm install`, `npm run build`)
-
-No environment variables are required for the sample catalog. To turn on live Grok, set `XAI_API_KEY` for Production and Preview. Set `XAI_MODEL` or `XAI_API_BASE_URL` only to override the defaults. Set the Supabase variables and `NEXT_PUBLIC_SITE_URL` only when accounts should work, then redeploy, because `NEXT_PUBLIC_` values are read at build time.
-
-A successful Vercel build is not enough. Open the deployment URL, browse storage and parking, open one listing of each, and submit both SpaceMatch prompts above. Without `XAI_API_KEY`, the page must say that live Grok is not configured.
-
-## Known limitations
-
-- Listings, hosts, prices, and photographs are fictional. Photographs are credited in `web/public/images/CREDITS.md`.
-- Booking requests and host drafts in the Yale demo are browser-only.
-- Live Grok is off until a server-side `XAI_API_KEY` is set. The local parser is labeled as such.
-- Accounts, published host listings, and database bookings need Supabase. This repository does not ship those credentials.
-- The app does not take payment.
+For now, the prototype demonstrates how unused space around Yale could become a more affordable and convenient resource for the entire student community.
