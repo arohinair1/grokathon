@@ -12,7 +12,7 @@ const groups = [
   {
     href: "/search?category=monthly-parking",
     title: "Parking near Yale",
-    blurb: "A driveway or covered spot for a car you are allowed to park, on a sample calendar.",
+    blurb: "A driveway or covered spot for a semester, or for a weekend visit, move-in, or graduation.",
     image: "/images/evening-driveway.jpg",
     imageAlt: "A car under a carport, used as a sample photo",
   },
