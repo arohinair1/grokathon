@@ -1,5 +1,6 @@
 import { estimateCapacity, interpretDates } from "@/lib/spacematch/assumptions"
 import {
+  budgetPeriodFor,
   dollarsIn,
   emptyRequirements,
   hasDateSignal,
@@ -31,6 +32,13 @@ function quantityBefore(text: string, pattern: RegExp): number | null {
   return NUMBER_WORDS[match[2].toLowerCase()] ?? null
 }
 
+function vehicleLabel(text: string): string {
+  if (/\bsuvs?\b/i.test(text)) return "SUV"
+  if (/\bvans?\b/i.test(text)) return "van"
+  if (/\btrucks?\b/i.test(text)) return "truck"
+  return "car"
+}
+
 function itemsFrom(text: string): RequestedItem[] {
   const specs: { kind: RequestedItem["kind"]; label: string; pattern: RegExp }[] = [
     { kind: "miniFridge", label: "mini-fridge", pattern: /mini[-\s]?fridge|fridge/ },
@@ -41,7 +49,8 @@ function itemsFrom(text: string): RequestedItem[] {
   ]
   return specs.flatMap((spec) => {
     if (!kindMentioned(spec.kind, text)) return []
-    return [{ label: spec.label, quantity: quantityBefore(text, spec.pattern), kind: spec.kind }]
+    const label = spec.kind === "vehicle" ? vehicleLabel(text) : spec.label
+    return [{ label, quantity: quantityBefore(text, spec.pattern), kind: spec.kind }]
   })
 }
 
@@ -77,7 +86,7 @@ export function parseLocalRequirements(messages: string[], today: string): Space
   const amount = latestDollars[0] ?? earlierDollars[0] ?? null
   if (amount) {
     requirements.budgetCents = amount * 100
-    requirements.budgetPeriod = /\b(a day|per day|\/day)\b/i.test(latest + earlier) ? "day" : "month"
+    requirements.budgetPeriod = budgetPeriodFor(`${latest}\n${earlier}`)
   }
 
   const dateText = hasDateSignal(latest) ? latest : hasDateSignal(earlier) ? earlier : ""

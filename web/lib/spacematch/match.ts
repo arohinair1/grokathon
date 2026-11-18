@@ -11,6 +11,22 @@ export type RankedMatch = {
   reasons: string[]
 }
 
+function budgetReason(listing: YaleListing, requirements: SpaceRequirements): string | null {
+  if (requirements.budgetCents === null || requirements.budgetPeriod === null) return null
+  const over = "Illustrative price is above the stated budget."
+  if (requirements.budgetPeriod === "total") {
+    if (listing.priceUnit === "event") return listing.priceCents > requirements.budgetCents ? over : null
+    if (listing.priceUnit === "day") {
+      const weekend = /\bweekend\b/i.test(requirements.accessNotes ?? "")
+      if (!weekend) return null
+      return listing.priceCents * 2 > requirements.budgetCents ? over : null
+    }
+    return "The listed price is recurring, not a one-time total."
+  }
+  if (requirements.budgetPeriod === listing.priceUnit && listing.priceCents > requirements.budgetCents) return over
+  return null
+}
+
 function itemConflict(listing: YaleListing, requirements: SpaceRequirements): string | null {
   for (const item of requirements.items) {
     if (item.kind === "miniFridge" && !listing.accepts.miniFridge) return "The listing does not accept a mini-fridge."
@@ -42,13 +58,8 @@ export function exclusionReasons(listing: YaleListing, requirements: SpaceRequir
   ) {
     reasons.push("Listed capacity is below the low end of the estimate.")
   }
-  if (
-    requirements.budgetCents !== null &&
-    requirements.budgetPeriod === listing.priceUnit &&
-    listing.priceCents > requirements.budgetCents
-  ) {
-    reasons.push("Illustrative price is above the stated budget.")
-  }
+  const budget = budgetReason(listing, requirements)
+  if (budget) reasons.push(budget)
   const conflict = itemConflict(listing, requirements)
   if (conflict) reasons.push(conflict)
   return reasons

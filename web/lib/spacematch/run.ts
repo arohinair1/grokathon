@@ -25,7 +25,8 @@ Do not invent listings, street addresses, prices, amenities, or dates the studen
 If they name a month without a year, use the next occurrence that has not already ended before today.
 datesAreExact is true only when they gave a calendar day or an ISO date.
 neighborhood is only one of Old Campus, Broadway, Science Hill, Dwight, East Rock, Downtown New Haven, or null. "Downtown" means Downtown New Haven.
-budgetCents is integer US cents. A stated "$100 per month" is 10000 and budgetPeriod "month". If they did not state a budget, use null.
+budgetCents is integer US cents. A stated "$100 per month" is 10000 and budgetPeriod "month". "$100 total", or a weekend stay that does not name a monthly price, is budgetPeriod "total". If they did not state a budget, use null.
+"for the summer" without month names is May 1 through August 31, using the next summer that has not already ended. "a weekend" without a calendar date is the next Saturday and Sunday on or after today. Do not pick a different weekend.
 Estimate capacityCuFtMin and capacityCuFtMax only for belongings they named. Use about 2–4 cubic feet per moving box, 3–6 per suitcase, 10–18 for a mini-fridge including clearance, and 10–20 for a bicycle. Say that these are estimates, not measurements. If they named no belongings, both capacity fields are null.
 The latest message overrides an earlier budget, neighborhood, date, or belonging list when it conflicts. Keep earlier details the latest message does not change. "Too" or "also" adds a belonging.
 vehicleSize is "oversized" for an SUV, van, or truck, "standard" for an ordinary car, otherwise null.

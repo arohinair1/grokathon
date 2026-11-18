@@ -7,9 +7,9 @@ import { Button } from "@/components/ui/button"
 import type { SpaceMatchResult } from "@/lib/spacematch/types"
 
 const EXAMPLES = [
-  "I'm going home for the summer and need to store a mini-fridge, two suitcases, and four boxes near Old Campus from May through August. My budget is around $100 per month.",
+  "I'm going home for the summer and need to store a mini-fridge, two suitcases, and four boxes near Old Campus for under $100 a month.",
+  "My parents are visiting Yale and need a driveway spot near Old Campus for a weekend. They have an SUV and want to spend under $100 total.",
   "I need a parking spot for a regular car near Science Hill from January through May. About $150 a month.",
-  "Looking for summer storage downtown for eight boxes and a bicycle, under $140 per month, from June to August.",
 ]
 
 export function SpaceMatchFinder() {
@@ -40,8 +40,8 @@ export function SpaceMatchFinder() {
       }
       setMessages(nextMessages)
       setResult(body)
-      if (body.requirements.capacityCuFtMax && override === null) {
-        setCapacity(String(body.requirements.capacityCuFtMax))
+      if (override === null) {
+        setCapacity(body.requirements.capacityCuFtMax ? String(body.requirements.capacityCuFtMax) : "")
       }
     } catch {
       setError("SpaceMatch could not be reached.")
@@ -322,6 +322,7 @@ function RequirementSummary({
             ? `${requirements.capacityCuFtMin}–${requirements.capacityCuFtMax} cubic feet. ${requirements.capacityAssumptions}`
             : requirements.capacityAssumptions || "No capacity estimate."}
         </p>
+        {requirements.capacityCuFtMax ? (
         <div className="mt-3 flex flex-col gap-3 sm:flex-row sm:items-end">
           <label className="text-sm">
             <span className="text-muted-foreground">Adjust the estimate (cubic feet)</span>
@@ -336,6 +337,7 @@ function RequirementSummary({
             Use this estimate
           </Button>
         </div>
+        ) : null}
       </div>
       {requirements.missing.length > 0 ? (
         <ul className="mt-4 space-y-1 text-sm text-muted-foreground">

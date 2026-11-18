@@ -111,6 +111,8 @@ export function interpretDates(
   if (iso.length === 1) return { from: iso[0], until: iso[0], exact: true }
 
   const hits = monthHits(text)
+  if (hits.length === 0 && /\bweekend\b/i.test(text)) return nextWeekend(today)
+  if (hits.length === 0 && /\bsummer\b/i.test(text)) return summerWindow(today)
   if (hits.length === 0) return null
   const start = hits[0]
   const end = hits[hits.length - 1]
@@ -130,4 +132,27 @@ export function interpretDates(
     until: from <= until ? until : from,
     exact: start.day !== null && end.day !== null,
   }
+}
+
+/** Next Saturday through Sunday. A request made on Saturday uses that Saturday. */
+export function nextWeekend(today: string): { from: string; until: string; exact: boolean } {
+  const [year, month, day] = today.split("-").map(Number)
+  const date = new Date(Date.UTC(year, month - 1, day))
+  const dayOfWeek = date.getUTCDay()
+  const daysUntilSaturday = dayOfWeek === 6 ? 0 : dayOfWeek === 0 ? 6 : 6 - dayOfWeek
+  date.setUTCDate(date.getUTCDate() + daysUntilSaturday)
+  const from = date.toISOString().slice(0, 10)
+  date.setUTCDate(date.getUTCDate() + 1)
+  return { from, until: date.toISOString().slice(0, 10), exact: false }
+}
+
+/** May 1 through August 31. A summer that has already ended moves to the next year. */
+export function summerWindow(today: string): { from: string; until: string; exact: boolean } {
+  let year = Number(today.slice(0, 4))
+  let until = isoDate(year, 8, 31)
+  if (until < today) {
+    year += 1
+    until = isoDate(year, 8, 31)
+  }
+  return { from: isoDate(year, 5, 1), until, exact: false }
 }

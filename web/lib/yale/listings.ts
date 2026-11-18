@@ -337,6 +337,31 @@ export const yaleListings: YaleListing[] = [
     availableUntil: "2027-05-20",
     featured: false,
   }),
+  listing({
+    id: "old-campus-weekend-driveway",
+    title: "Weekend driveway near Old Campus",
+    neighborhood: "Old Campus",
+    category: "monthly-parking",
+    spaceType: "Driveway",
+    priceCents: 8000,
+    priceUnit: "event",
+    summary: "A sample driveway near Old Campus for one weekend, including overnight, for an SUV or a standard car.",
+    description:
+      "Sample listing for the Yale demo. The photograph is not an Old Campus address and not a university lot. One off-street driveway for a weekend visit, move-in, or graduation. Overnight parking is included. An SUV or a standard car fits. Box trucks, buses, and trailers do not. The illustrative price is $80 for the weekend, not a charge this preview can collect.",
+    image: "/images/driveway-modern.jpg",
+    imageAlt: "A house and driveway used as a sample photo, not a listed address",
+    capacityLabel: "One SUV or standard car, overnight included",
+    capacityCuFtMin: null,
+    capacityCuFtMax: null,
+    suitableFor: ["One SUV", "One standard car", "Overnight weekend parking"],
+    accessNotes: "Overnight is included. Come and go during the booked weekend. The sample host asks for a quiet arrival.",
+    restrictions: ["One vehicle.", "SUVs fit. No box trucks, buses, or trailers.", "Not a storage space."],
+    accepts: { boxes: false, luggage: false, miniFridge: false, bicycle: false, vehicle: true },
+    vehicleLimit: null,
+    availableFrom: "2026-11-17",
+    availableUntil: "2027-08-31",
+    featured: true,
+  }),
 ]
 
 const byId = new Map(yaleListings.map((listing) => [listing.id, listing]))

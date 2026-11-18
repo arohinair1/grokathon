@@ -30,9 +30,15 @@ export default function HomePage() {
               >
                 Browse summer storage
               </Link>
+              <Link
+                href="/search?category=monthly-parking"
+                className={cn(buttonVariants({ variant: "outline" }), "h-12 rounded-md px-5 text-[15px]")}
+              >
+                Browse parking
+              </Link>
             </div>
             <p className="mt-4 max-w-md text-sm leading-6 text-muted-foreground">
-              Summer and semester-break storage comes first. Parking near campus is here too. Sample listings are fictional, prices are illustrative, and this preview does not take payment.
+              Summer storage and off-street parking are both part of this demo. Parking includes a driveway for a weekend visit, move-in, or graduation. Sample listings are fictional, prices are illustrative, and this preview does not take payment.
             </p>
           </div>
           <div className="relative min-h-80 lg:min-h-full">

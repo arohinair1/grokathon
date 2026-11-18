@@ -18,10 +18,20 @@ export function neighborhoodsIn(text: string): YaleNeighborhood[] {
 
 export function hasDateSignal(text: string): boolean {
   return (
-    /\b(january|february|march|april|may|june|july|august|september|october|november|december|20\d{2}|\d{1,2}\/\d{1,2})\b/i.test(
+    /\b(january|february|march|april|may|june|july|august|september|october|november|december|summer|weekend|20\d{2}|\d{1,2}\/\d{1,2})\b/i.test(
       text,
     )
   )
+}
+
+/** A stated period wins over the monthly default. A month phrase wins when both appear. */
+export function budgetPeriodFor(text: string): BudgetPeriod {
+  if (/\b(per month|a month|\/month|monthly)\b/i.test(text)) return "month"
+  if (/\b(total|in total|altogether)\b/i.test(text)) return "total"
+  if (/\b(a day|per day|\/day|daily)\b/i.test(text)) return "day"
+  if (/\bsemester\b/i.test(text)) return "semester"
+  if (/\bweekend\b/i.test(text)) return "total"
+  return "month"
 }
 
 export function dollarsIn(text: string): number[] {
@@ -149,15 +159,22 @@ export function guardRequirements(
   const proposedDollars = asInt(raw.budgetCents)
   const proposedAmount = proposedDollars === null ? null : Math.round(proposedDollars / 100)
   const allowed = dollars.length > 0 ? dollars : earlierDollars
+  const statedPeriod = budgetPeriodFor(`${latest}\n${earlier}`)
+  const periodIsExplicit =
+    /\b(per month|a month|\/month|monthly|total|in total|altogether|a day|per day|\/day|daily|semester|weekend)\b/i.test(
+      `${latest}\n${earlier}`,
+    )
   if (proposedAmount !== null && allowed.includes(proposedAmount) && proposedAmount > 0 && proposedAmount <= 5000) {
     requirements.budgetCents = proposedAmount * 100
-    requirements.budgetPeriod = cleanPeriod(typeof raw.budgetPeriod === "string" ? raw.budgetPeriod : null) ?? "month"
+    requirements.budgetPeriod = periodIsExplicit
+      ? statedPeriod
+      : (cleanPeriod(typeof raw.budgetPeriod === "string" ? raw.budgetPeriod : null) ?? statedPeriod)
   } else if (dollars.length === 1) {
     requirements.budgetCents = dollars[0] * 100
-    requirements.budgetPeriod = /\bday\b/i.test(latest) ? "day" : "month"
+    requirements.budgetPeriod = statedPeriod
   } else if (dollars.length === 0 && earlierDollars.length === 1 && !/\b(any budget|no budget|budget does not matter)\b/i.test(latest)) {
     requirements.budgetCents = earlierDollars[0] * 100
-    requirements.budgetPeriod = "month"
+    requirements.budgetPeriod = statedPeriod
   }
 
   const dateSource = hasDateSignal(latest) ? latest : hasDateSignal(earlier) ? earlier : ""
@@ -174,7 +191,12 @@ export function guardRequirements(
         ),
       )
       const monthIsNamed = (iso: string) => namedMonths.size === 0 || namedMonths.has(Number(iso.slice(5, 7))) || dateSource.includes(iso)
-      if (proposedFrom && proposedUntil && monthIsNamed(proposedFrom) && monthIsNamed(proposedUntil)) {
+      const relativeOnly = namedMonths.size === 0 && interpreted !== null
+      if (relativeOnly) {
+        requirements.from = interpreted.from
+        requirements.until = interpreted.until
+        requirements.datesAreExact = false
+      } else if (proposedFrom && proposedUntil && monthIsNamed(proposedFrom) && monthIsNamed(proposedUntil)) {
         const [from, until] = proposedFrom <= proposedUntil ? [proposedFrom, proposedUntil] : [proposedUntil, proposedFrom]
         const yearOk = [from, until].every((iso) => {
           const year = Number(iso.slice(0, 4))

@@ -57,4 +57,23 @@ describe("yale matching", () => {
     expect(result.matches.map((match) => match.listing.id)).toContain("science-hill-covered-parking")
     expect(result.matches.every((match) => match.listing.category === "monthly-parking")).toBe(true)
   })
+
+  it("matches the Old Campus weekend driveway for an SUV under a $100 total", () => {
+    const result = matchListings({
+      ...summer,
+      need: "parking",
+      items: [{ label: "SUV", quantity: 1, kind: "vehicle" }],
+      capacityCuFtMin: null,
+      capacityCuFtMax: null,
+      neighborhood: "Old Campus",
+      budgetCents: 10000,
+      budgetPeriod: "total",
+      from: "2026-11-21",
+      until: "2026-11-22",
+      accessNotes: "Weekend access mentioned.",
+      vehicleSize: "oversized",
+    })
+    expect(result.matches.map((match) => match.listing.id)).toEqual(["old-campus-weekend-driveway"])
+    expect(result.excluded.some((entry) => entry.id === "science-hill-covered-parking")).toBe(true)
+  })
 })
