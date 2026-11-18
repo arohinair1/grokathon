@@ -60,6 +60,8 @@ The goal is to make finding storage or parking feel less like searching through 
 
 **[Watch the 60-Second College Space Demo](YOUR_VIDEO_URL)**
 
+<img width="634" height="359" alt="1DBEB722-482F-4A94-B400-96D99FC1B0EE_4_5005_c" src="https://github.com/user-attachments/assets/eb645ca2-c88f-4e31-af49-7c5217708446" />
+
 This walkthrough demonstrates the storage marketplace, parking discovery, Grok SpaceMatch, and the host listing experience.
 
 ## Grok in Action — Hackathon Screenshot
